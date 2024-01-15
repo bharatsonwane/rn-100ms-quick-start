@@ -18,7 +18,7 @@ import {
   changeJoinVideoMuted,
   changeMirrorCamera,
   resetJoinConfig,
-} from '../redux/actions';
+} from '../redux/reducers/appSlice';
 
 export const JoinSettingsModalContent = () => {
   const dispatch = useDispatch();

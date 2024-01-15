@@ -1,13 +1,13 @@
 import {configureStore, createListenerMiddleware} from '@reduxjs/toolkit';
 import app from './reducers/appState';
-import user from './reducers/userState';
+import appSlice from './reducers/appSlice';
 import userSlice from './reducers/userSlice';
 
 export const listenerMiddleware = createListenerMiddleware();
 
 export const store = configureStore({
   reducer: {
-    app: app,
+    app: appSlice.reducer,
     user: userSlice.reducer,
   },
   middleware: getDefaultMiddleware =>
