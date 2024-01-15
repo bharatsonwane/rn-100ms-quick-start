@@ -18,7 +18,10 @@ import Toast from 'react-native-simple-toast';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {Constants} from '../../utils/types';
-import {clearHmsReference, saveUserData} from '../../redux/actions';
+import {
+  saveUserDataAction,
+  clearHmsReferenceAction,
+} from '../../redux/reducers/userSlice';
 import {
   removeNode,
   removeNodeWithPeerId,
@@ -119,7 +122,7 @@ export const usePeerTrackNodes = () => {
       console.log('Destroy Success: ', destroyResult);
 
       // Removing HMSSDK instance stored in redux store
-      dispatch(clearHmsReference());
+      dispatch(clearHmsReferenceAction());
     } catch (error) {
       console.log('Leave or Destroy Error: ', error);
     }
@@ -178,7 +181,9 @@ export const usePeerTrackNodes = () => {
       // Local Peer has been updated. We are updaing Local Peer object stored in redux store. This will also update our Local Peer controls UI accordingly.
       hmsInstance
         .getLocalPeer()
-        .then(localPeer => dispatch(saveUserData({hmsLocalPeer: localPeer})));
+        .then(localPeer =>
+          dispatch(saveUserDataAction({hmsLocalPeer: localPeer})),
+        );
 
       // Updating the LocalPeer Tile.
       // `updateNodeWithPeer` function updates Peer object in PeerTrackNodes and returns updated list.
@@ -310,7 +315,9 @@ export const usePeerTrackNodes = () => {
         // We are updaing Local Peer object stored in redux store. This will also update our Local Peer controls UI accordingly.
         hmsInstance
           .getLocalPeer()
-          .then(localPeer => dispatch(saveUserData({hmsLocalPeer: localPeer})));
+          .then(localPeer =>
+            dispatch(saveUserDataAction({hmsLocalPeer: localPeer})),
+          );
       }
 
       // We will only update Tile "with updated track" when track type is Video.
@@ -412,7 +419,7 @@ export const usePeerTrackNodes = () => {
     setLoading(false);
 
     // Saving Local Peer object in redux store
-    dispatch(saveUserData({hmsLocalPeer: localPeer}));
+    dispatch(saveUserDataAction({hmsLocalPeer: localPeer}));
 
     // Saving Meeting Link to Async Storage for persisting it between app starts.
     AsyncStorage.setItem(
@@ -452,7 +459,7 @@ export const usePeerTrackNodes = () => {
 
         // Saving HMSSDK instance in redux store and local Ref
         hmsInstanceRef.current = hmsInstance;
-        dispatch(saveUserData({hmsInstance}));
+        dispatch(saveUserDataAction({hmsInstance}));
 
         const token = await hmsInstance.getAuthTokenByRoomCode(
           params.roomCode,

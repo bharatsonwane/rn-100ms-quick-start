@@ -9,7 +9,7 @@ import {useDispatch} from 'react-redux';
 
 import {styles} from './styles';
 import {CustomButton} from '../../components';
-import {saveUserData} from '../../redux/actions';
+import {saveUserDataAction} from '../../redux/reducers/userSlice';
 import {validateUrl} from '../../utils/functions';
 
 const QRCodeScanner = () => {
@@ -31,7 +31,7 @@ const QRCodeScanner = () => {
 
     // Saving scanned Joining Link to use it in MeetingSetup screen
     dispatch(
-      saveUserData({
+      saveUserDataAction({
         roomLink: joiningLink.replace('meeting', 'preview'),
       }),
     );

@@ -19,6 +19,7 @@ export const Header = ({setModalVisible}) => {
    * For More info about Local Peer {@link HMSLocalPeer} and switchCamera method {@link HMSLocalVideoTrack#switchCamera}
    */
   const onSwitchCameraPress = () => {
+    // mutation
     localPeer?.localVideoTrack()?.switchCamera();
   };
 

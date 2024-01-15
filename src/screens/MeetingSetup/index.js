@@ -15,7 +15,7 @@ import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {styles} from './styles';
 
 import {CustomButton, CustomInput} from '../../components';
-import {saveUserData} from '../../redux/actions';
+import {saveUserDataAction} from '../../redux/reducers/userSlice';
 import {callService} from '../../utils/functions';
 import {COLORS} from '../../utils/theme';
 
@@ -49,10 +49,11 @@ export const MeetingSetup = () => {
        * {@link https://www.100ms.live/docs/react-native/v2/guides/token-endpoint | Token Endpoint Guide}
        */
       const data = await callService(roomLink);
+      console.info('bharatData', data);
 
       // Saving data into redux store
       dispatch(
-        saveUserData({
+        saveUserDataAction({
           userName: peerName,
           roomCode: data.roomCode,
         }),

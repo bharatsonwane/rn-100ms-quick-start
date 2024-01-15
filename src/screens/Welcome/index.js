@@ -25,7 +25,7 @@ import {
   DefaultModal,
   JoinSettingsModalContent,
 } from '../../components';
-import {saveUserData} from '../../redux/actions';
+import {saveUserDataAction} from '../../redux/reducers/userSlice';
 import {Constants} from '../../utils/types';
 
 export const Welcome = () => {
@@ -34,6 +34,8 @@ export const Welcome = () => {
   const navigation = useNavigation();
   const roomLink = useSelector(state => state.user.roomLink);
 
+  console.info('bharatRoomLink', roomLink);
+
   const [joinDisabled, setJoinDisabled] = useState(true);
   const [joiningLink, setJoiningLink] = useState(roomLink);
   const [moreModalVisible, setMoreModalVisible] = useState(false);
@@ -41,7 +43,7 @@ export const Welcome = () => {
   const handleJoinPress = () => {
     // Saving entered Joining Link to use it in "Meeting Setup" screen
     dispatch(
-      saveUserData({
+      saveUserDataAction({
         roomLink: joiningLink.replace('meeting', 'preview'),
       }),
     );

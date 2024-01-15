@@ -20,6 +20,7 @@ export const Footer = () => {
    * Checking Mute Status of local video track
    * For more info, checkout {@link https://www.100ms.live/docs/react-native/v2/features/mute#mute-unmute-status | Mute/Unmute Status}
    */
+  // mutation
   const isVideoMute = localPeer?.videoTrack?.isMute() ?? false;
 
   /**
@@ -27,6 +28,7 @@ export const Footer = () => {
    * For more info, checkout {@link https://www.100ms.live/docs/react-native/v2/features/mute | Mute & Unmute}
    */
   const toggleLocalAudio = () => {
+    // mutation
     localPeer?.localAudioTrack()?.setMute(!isAudioMute);
   };
 
@@ -35,6 +37,7 @@ export const Footer = () => {
    * For more info, checkout {@link https://www.100ms.live/docs/react-native/v2/features/mute | Mute & Unmute}
    */
   const toggleLocalVideo = () => {
+    // mutation
     localPeer?.localVideoTrack()?.setMute(!isVideoMute);
   };
 
