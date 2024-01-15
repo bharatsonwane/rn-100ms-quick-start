@@ -1,30 +1,23 @@
 import React from 'react';
 import {Alert, Text, TouchableOpacity, View} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-import type {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import {BarCodeReadEvent, RNCamera} from 'react-native-camera';
+import {RNCamera} from 'react-native-camera';
 import QRScanner from 'react-native-qrcode-scanner';
 import {useDispatch} from 'react-redux';
 
-import type {AppStackParamList} from '../../navigator';
 import {styles} from './styles';
 import {CustomButton} from '../../components';
 import {saveUserData} from '../../redux/actions';
 import {validateUrl} from '../../utils/functions';
 
-type QRCodeScannerScreenProp = NativeStackNavigationProp<
-  AppStackParamList,
-  'QRCodeScannerScreen'
->;
-
 const QRCodeScanner = () => {
   const dispatch = useDispatch();
   const {top, bottom, left, right} = useSafeAreaInsets();
-  const navigation = useNavigation<QRCodeScannerScreenProp>();
+  const navigation = useNavigation();
 
-  const handleScanSuccess = (e: BarCodeReadEvent) => {
+  const handleScanSuccess = e => {
     const joiningLink = e.data;
 
     const isJoiningLinkValid = validateUrl(joiningLink);

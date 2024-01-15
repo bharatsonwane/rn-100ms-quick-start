@@ -1,27 +1,17 @@
-import {
-  HMSPeer,
-  HMSTrack,
-  HMSTrackSource,
-  HMSTrackType,
-} from '@100mslive/react-native-hms';
-
-import {PeerTrackNode} from '../../utils/types';
+import {HMSTrackSource, HMSTrackType} from '@100mslive/react-native-hms';
 
 /**
  * returns `uniqueId` for a given `peer` and `track` combination
  */
-export const getPeerTrackNodeId = (peer: HMSPeer, track?: HMSTrack) => {
+export const getPeerTrackNodeId = (peer, track) => {
   return peer.peerID + (track?.source ?? HMSTrackSource.REGULAR);
 };
 
 /**
  * creates `PeerTrackNode` object for given `peer` and `track` combination
  */
-export const createPeerTrackNode = (
-  peer: HMSPeer,
-  track?: HMSTrack,
-): PeerTrackNode => {
-  let isVideoTrack: boolean = false;
+export const createPeerTrackNode = (peer, track) => {
+  let isVideoTrack = false;
   if (track && track?.type === HMSTrackType.VIDEO) {
     isVideoTrack = true;
   }
@@ -37,10 +27,7 @@ export const createPeerTrackNode = (
 /**
  * Removes all nodes which has `peer` with `id` same as the given `peerID`.
  */
-export const removeNodeWithPeerId = (
-  nodes: PeerTrackNode[],
-  peerID: string,
-) => {
+export const removeNodeWithPeerId = (nodes, peerID) => {
   return nodes.filter(node => node.peer.peerID !== peerID);
 };
 
@@ -50,11 +37,7 @@ export const removeNodeWithPeerId = (
  * If `createNew` is passed as `true` and no `PeerTrackNode` exists with `id` same as `uniqueId` generated from given `peer` and `track`
  * then new `PeerTrackNode` object will be created.
  */
-export const updateNodeWithPeer = (data: {
-  nodes: PeerTrackNode[];
-  peer: HMSPeer;
-  createNew: boolean;
-}) => {
+export const updateNodeWithPeer = data => {
   const {nodes, peer, createNew} = data;
 
   const peerExists = nodes.some(node => node.peer.peerID === peer.peerID);
@@ -82,11 +65,7 @@ export const updateNodeWithPeer = (data: {
 /**
  * Removes all nodes which has `id` same as `uniqueId` generated from given `peer` and `track`.
  */
-export const removeNode = (
-  nodes: PeerTrackNode[],
-  peer: HMSPeer,
-  track: HMSTrack,
-) => {
+export const removeNode = (nodes, peer, track) => {
   const uniqueId = getPeerTrackNodeId(peer, track);
 
   return nodes.filter(node => node.id !== uniqueId);
@@ -95,11 +74,7 @@ export const removeNode = (
 /**
  * Removes `track` from the nodes which has `id` same as `uniqueId` generated from given `peer` and `track`.
  */
-export const removeTrackFromNodes = (
-  nodes: PeerTrackNode[],
-  peer: HMSPeer,
-  track: HMSTrack,
-) => {
+export const removeTrackFromNodes = (nodes, peer, track) => {
   const uniqueId = getPeerTrackNodeId(peer, track);
 
   return nodes.map(node =>
@@ -113,13 +88,7 @@ export const removeTrackFromNodes = (
  * If `createNew` is passed as `true` and no `PeerTrackNode` exists with `id` same as `uniqueId` generated from given `peer` and `track`
  * then new `PeerTrackNode` object will be created
  */
-export const updateNode = (data: {
-  nodes: PeerTrackNode[];
-  peer: HMSPeer;
-  track: HMSTrack;
-  isDegraded?: boolean;
-  createNew: boolean;
-}) => {
+export const updateNode = data => {
   const {nodes, peer, track, isDegraded, createNew} = data;
 
   const uniqueId = getPeerTrackNodeId(peer, track);

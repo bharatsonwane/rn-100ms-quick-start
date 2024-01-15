@@ -5,13 +5,7 @@ import Feather from 'react-native-vector-icons/Feather';
 import {styles} from '../styles';
 import {CustomButton} from '../../../components';
 
-export const LeaveRoomModal = ({
-  onSuccess,
-  cancelModal,
-}: {
-  onSuccess: Function;
-  cancelModal: Function;
-}) => {
+export const LeaveRoomModal = ({onSuccess, cancelModal}) => {
   const onLeave = () => {
     cancelModal();
     onSuccess();

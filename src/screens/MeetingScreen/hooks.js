@@ -2,14 +2,8 @@ import {
   HMSAudioTrackSettings,
   HMSCameraFacing,
   HMSConfig,
-  HMSException,
-  HMSLocalPeer,
-  HMSPeer,
   HMSPeerUpdate,
-  HMSRoom,
   HMSSDK,
-  HMSSpeaker,
-  HMSTrack,
   HMSTrackSettings,
   HMSTrackSettingsInitState,
   HMSTrackSource,
@@ -22,12 +16,8 @@ import {useCallback, useEffect, useRef, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import Toast from 'react-native-simple-toast';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {RouteProp, useNavigation, useRoute} from '@react-navigation/native';
-import type {NativeStackNavigationProp} from '@react-navigation/native-stack';
-
-import {RootState} from '../../redux';
-import {Constants, PeerTrackNode} from '../../utils/types';
-import type {AppStackParamList} from '../../navigator';
+import {useNavigation, useRoute} from '@react-navigation/native';
+import {Constants} from '../../utils/types';
 import {clearHmsReference, saveUserData} from '../../redux/actions';
 import {
   removeNode,
@@ -38,13 +28,6 @@ import {
 } from './utils';
 import {Alert} from 'react-native';
 
-type MeetingScreenProp = NativeStackNavigationProp<
-  AppStackParamList,
-  'MeetingScreen'
->;
-
-type MeetingScreenParams = RouteProp<AppStackParamList, 'MeetingScreen'>;
-
 /**
  * Creates an instance of HMSTrackSettings
  * @param {Object} config - Config which sets up state of Audio and Video Tracks Settings
@@ -54,13 +37,7 @@ type MeetingScreenParams = RouteProp<AppStackParamList, 'MeetingScreen'>;
  *
  * For more info, checkout {@link https://www.100ms.live/docs/react-native/v2/advanced-features/track-settings | Track Settings}
  */
-const getTrackSettings = ({
-  mutedAudio,
-  mutedVideo,
-}: {
-  mutedAudio: boolean;
-  mutedVideo: boolean;
-}) => {
+const getTrackSettings = ({mutedAudio, mutedVideo}) => {
   let audioSettings = new HMSAudioTrackSettings({
     initialState: mutedAudio
       ? HMSTrackSettingsInitState.MUTED
@@ -87,31 +64,31 @@ const getTrackSettings = ({
  */
 export const usePeerTrackNodes = () => {
   // params passed to Meeting Screen. We need `token` from params to join meeting room.
-  const {params} = useRoute<MeetingScreenParams>();
+  const {params} = useRoute();
   const dispatch = useDispatch();
-  const navigation = useNavigation<MeetingScreenProp>();
+  const navigation = useNavigation();
 
   /**
    * {@link HMSSDK} instance, Initially this is null.
    */
-  const hmsInstanceRef = useRef<HMSSDK | null>(null);
+  const hmsInstanceRef = useRef(null);
 
   /**
    * Username enter by user in Meeting Setup screen
    */
-  const userName = useSelector((state: RootState) => state.user.userName);
+  const userName = useSelector(state => state.user.userName);
   /**
    * Join Options that are set from Welcome screen
    */
-  const joinConfig = useSelector((state: RootState) => state.app.joinConfig);
+  const joinConfig = useSelector(state => state.app.joinConfig);
   /**
    * Meeting Joining Link that is set from Welcome screen
    */
-  const roomLink = useSelector((state: RootState) => state.user.roomLink);
+  const roomLink = useSelector(state => state.user.roomLink);
 
   const [loading, setLoading] = useState(true);
-  const [peerTrackNodes, setPeerTrackNodes] = useState<PeerTrackNode[]>([]); // Use this state to render Peer Tiles
-  const [activeSpeakers, setActiveSpeakers] = useState<HMSSpeaker[]>([]); // Use this state to identify active speaker peer tiles
+  const [peerTrackNodes, setPeerTrackNodes] = useState([]); // Use this state to render Peer Tiles
+  const [activeSpeakers, setActiveSpeakers] = useState([]); // Use this state to identify active speaker peer tiles
 
   /**
    * Handles Meeting leave process
@@ -154,7 +131,7 @@ export const usePeerTrackNodes = () => {
    *
    * For more info, Check out {@link https://www.100ms.live/docs/react-native/v2/features/error-handling | Error Handling}
    */
-  const onErrorListener = (error: HMSException) => {
+  const onErrorListener = error => {
     console.log(error);
 
     setLoading(false);
@@ -179,10 +156,7 @@ export const usePeerTrackNodes = () => {
    * @param {HMSPeer} data.peer - Updated Peer
    * @param {HMSPeerUpdate} data.type - Update Type
    */
-  const onPeerListener = (
-    hmsInstance: HMSSDK,
-    data: {peer: HMSPeer; type: HMSPeerUpdate},
-  ) => {
+  const onPeerListener = (hmsInstance, data) => {
     const {peer, type} = data;
 
     // We will create Tile for the Joined Peer when we receive HMSUpdateListenerActions.ON_TRACK_UPDATE.
@@ -263,10 +237,7 @@ export const usePeerTrackNodes = () => {
    * @param {HMSTrack} data.track - Peer Track
    * @param {HMSTrackUpdate} data.type - Update Type
    */
-  const onTrackListener = (
-    hmsInstance: HMSSDK,
-    data: {peer: HMSPeer; track: HMSTrack; type: HMSTrackUpdate},
-  ) => {
+  const onTrackListener = (hmsInstance, data) => {
     const {peer, track, type} = data;
 
     // on TRACK_ADDED update
@@ -399,7 +370,7 @@ export const usePeerTrackNodes = () => {
    *
    * For more info about Audio Levels (Speakers), check out {@link https://www.100ms.live/docs/react-native/v2/advanced-features/show-audio-level | Show Audio Levels}
    */
-  const onSpeakerListener = (data: HMSSpeaker[]) => setActiveSpeakers(data);
+  const onSpeakerListener = data => setActiveSpeakers(data);
 
   /**
    * Handles Join Update received from {@link HMSUpdateListenerActions.ON_JOIN} event listener
@@ -407,7 +378,7 @@ export const usePeerTrackNodes = () => {
    * @param {Object} data - object which has room object
    * @param {Object} data.room - current {@link HMSRoom | room} object
    */
-  const onJoinSuccess = (data: {room: HMSRoom}) => {
+  const onJoinSuccess = data => {
     /**
      * Checkout {@link HMSLocalPeer | HMSLocalPeer} Class
      */
@@ -421,7 +392,7 @@ export const usePeerTrackNodes = () => {
         updateNode({
           nodes: prevPeerTrackNodes,
           peer: localPeer,
-          track: localPeer.videoTrack as HMSTrack,
+          track: localPeer.videoTrack,
           createNew: true,
         }),
       );

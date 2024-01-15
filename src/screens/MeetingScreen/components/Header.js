@@ -2,25 +2,16 @@ import React from 'react';
 import {View, Text} from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import type {
-  HMSLocalPeer,
-  HMSLocalVideoTrack,
-} from '@100mslive/react-native-hms';
 import {useSelector} from 'react-redux';
 
 import {styles} from '../styles';
 
 import {CustomButton} from '../../../components';
 import {ModalTypes} from '../../../utils/types';
-import type {RootState} from '../../../redux';
 
-interface HeaderProps {
-  setModalVisible: React.Dispatch<React.SetStateAction<ModalTypes>>;
-}
-
-export const Header: React.FC<HeaderProps> = ({setModalVisible}) => {
-  const localPeer = useSelector((state: RootState) => state.user.hmsLocalPeer);
-  const roomCode = useSelector((state: RootState) => state.user.roomCode);
+export const Header = ({setModalVisible}) => {
+  const localPeer = useSelector(state => state.user.hmsLocalPeer);
+  const roomCode = useSelector(state => state.user.roomCode);
 
   /**
    * User (i.e. Local Peer) can switch between front and back cameras if available

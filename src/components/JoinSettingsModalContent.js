@@ -13,7 +13,6 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 
 import {COLORS} from '../utils/theme';
 import {SwitchRow} from './SwitchRow';
-import {RootState} from '../redux';
 import {
   changeJoinAudioMuted,
   changeJoinVideoMuted,
@@ -21,13 +20,9 @@ import {
   resetJoinConfig,
 } from '../redux/actions';
 
-interface JoinSettingsModalContentProps {}
-
-export const JoinSettingsModalContent: React.FC<
-  JoinSettingsModalContentProps
-> = () => {
+export const JoinSettingsModalContent = () => {
   const dispatch = useDispatch();
-  const joinConfig = useSelector((state: RootState) => state.app.joinConfig);
+  const joinConfig = useSelector(state => state.app.joinConfig);
   const {mutedAudio, mutedVideo, mirrorCamera} = joinConfig;
 
   return (

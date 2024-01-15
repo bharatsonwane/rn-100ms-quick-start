@@ -1,10 +1,8 @@
-import React, {ReactNode} from 'react';
+import React from 'react';
 import {
   Modal,
   StyleSheet,
   View,
-  StyleProp,
-  ViewStyle,
   KeyboardAvoidingView,
   Platform,
 } from 'react-native';
@@ -24,16 +22,6 @@ export const DefaultModal = ({
   modalPosiion = 'flex-end',
   viewStyle,
   modalStyle,
-}: {
-  modalVisible: boolean;
-  setModalVisible: any;
-  children: ReactNode;
-  animationType?: 'none' | 'slide' | 'fade';
-  transparent?: boolean;
-  overlay?: boolean;
-  modalPosiion?: 'flex-end' | 'center';
-  viewStyle?: StyleProp<ViewStyle>;
-  modalStyle?: StyleProp<ViewStyle>;
 }) => {
   const {left, right} = useSafeAreaInsets();
   return (

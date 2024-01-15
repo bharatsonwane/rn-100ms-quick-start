@@ -11,7 +11,7 @@ export const getMeetingUrl = () =>
 
 export const getMeetingCode = () => 'nih-bkn-vek';
 
-export const getInitials = (name?: String): String => {
+export const getInitials = name => {
   let initials = '';
   if (name) {
     if (name.includes(' ')) {
@@ -36,7 +36,7 @@ export const getInitials = (name?: String): String => {
   return initials.toUpperCase();
 };
 
-export const callService = async (roomLink: string) => {
+export const callService = async roomLink => {
   let roomCode;
   let subdomain;
 
@@ -75,11 +75,11 @@ export const callService = async (roomLink: string) => {
  * @param max maximum range value
  * @returns value between min and max, min is inclusive and max is exclusive
  */
-export const getRandomNumberInRange = (min: number, max: number) => {
+export const getRandomNumberInRange = (min, max) => {
   return Math.floor(Math.random() * (max - min) + min);
 };
 
-export const getRandomUserId = (length: number) => {
+export const getRandomUserId = length => {
   return Array.from({length}, () => {
     const randomAlphaAsciiCode = getRandomNumberInRange(97, 123); // 97 - 122 is the ascii code range for a-z chars
     const alphaCharacter = String.fromCharCode(randomAlphaAsciiCode);
@@ -87,11 +87,7 @@ export const getRandomUserId = (length: number) => {
   }).join('');
 };
 
-export const checkPermissions = async (
-  permissions: Array<
-    (typeof PERMISSIONS.ANDROID)[keyof typeof PERMISSIONS.ANDROID]
-  >,
-): Promise<boolean> => {
+export const checkPermissions = async permissions => {
   if (Platform.OS === 'ios') {
     return true;
   }
@@ -138,9 +134,7 @@ export const checkPermissions = async (
   }
 };
 
-export const getRoomLinkDetails = (
-  roomLink: string,
-): {roomCode: string; roomDomain: string} => {
+export const getRoomLinkDetails = roomLink => {
   const codeObject = RegExp(/(?!\/)[a-zA-Z\-0-9]*$/g).exec(roomLink);
 
   const domainObject = RegExp(/(https:\/\/)?(?:[a-zA-Z0-9.-])+(?!\\)/).exec(
@@ -162,7 +156,7 @@ export const getRoomLinkDetails = (
   };
 };
 
-export const validateUrl = (url?: string): boolean => {
+export const validateUrl = url => {
   if (url) {
     const pattern = new RegExp(
       '^(https?:\\/\\/)?' +

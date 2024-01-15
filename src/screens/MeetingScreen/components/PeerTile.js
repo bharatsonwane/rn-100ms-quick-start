@@ -4,15 +4,9 @@ import Feather from 'react-native-vector-icons/Feather';
 
 import {styles} from '../styles';
 
-import {PeerTrackNode} from '../../../utils/types';
 import PeerDisplayView from './PeerDisplayView';
 
-interface PeerTileProps {
-  node: PeerTrackNode;
-  isActive: boolean;
-}
-
-const PeerTile: React.FC<PeerTileProps> = ({node, isActive}) => {
+const PeerTile = ({node, isActive}) => {
   return (
     <View style={styles.tileContainer}>
       <View

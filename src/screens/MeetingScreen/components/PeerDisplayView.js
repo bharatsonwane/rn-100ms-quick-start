@@ -1,37 +1,15 @@
 import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
-import {
-  HMSVideoViewMode,
-  HMSTrackSource,
-  HMSVideoTrack,
-  HMSPeer,
-} from '@100mslive/react-native-hms';
+import {HMSVideoViewMode, HMSTrackSource} from '@100mslive/react-native-hms';
 import {useSelector} from 'react-redux';
 
 import {styles} from '../styles';
 
 import {getInitials} from '../../../utils/functions';
-import type {RootState} from '../../../redux';
 
-export interface PeerDisplayViewProps {
-  isDegraded?: boolean;
-  isLocal?: boolean;
-  peer: HMSPeer;
-  videoTrack?: HMSVideoTrack;
-}
-
-const PeerDisplayView = ({
-  isDegraded,
-  isLocal,
-  peer,
-  videoTrack,
-}: PeerDisplayViewProps) => {
-  const HmsView = useSelector(
-    (state: RootState) => state.user.hmsInstance?.HmsView || null,
-  );
-  const mirrorCamera = useSelector(
-    (state: RootState) => state.app.joinConfig.mirrorCamera,
-  );
+const PeerDisplayView = ({isDegraded, isLocal, peer, videoTrack}) => {
+  const HmsView = useSelector(state => state.user.hmsInstance?.HmsView || null);
+  const mirrorCamera = useSelector(state => state.app.joinConfig.mirrorCamera);
 
   if (!HmsView) {
     return null;
@@ -52,8 +30,8 @@ const PeerDisplayView = ({
            * For more info about its props and usage, Check out {@link https://www.100ms.live/docs/react-native/v2/features/render-video | Render Video}
            */}
           <HmsView
-            trackId={videoTrack?.trackId!}
-            key={videoTrack?.trackId!}
+            trackId={videoTrack?.trackId}
+            key={videoTrack?.trackId}
             mirror={
               isLocal && mirrorCamera !== undefined ? mirrorCamera : false
             }

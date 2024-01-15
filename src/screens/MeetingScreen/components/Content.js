@@ -1,25 +1,19 @@
 import React from 'react';
 import {View, Text, ActivityIndicator, FlatList, Platform} from 'react-native';
-import type {HMSSDK, HMSSpeaker} from '@100mslive/react-native-hms';
 
 import {styles} from '../styles';
 
 import {DefaultModal} from '../../../components';
-import {ModalTypes, PeerTrackNode} from '../../../utils/types';
+import {ModalTypes} from '../../../utils/types';
 import {LeaveRoomModal} from './Modals';
 import {usePeerTrackNodes} from '../hooks';
 import {COLORS} from '../../../utils/theme';
 import PeerTile from './PeerTile';
 import {getPeerTrackNodeId} from '../utils';
 
-const _keyExtractor = (item: PeerTrackNode) => item.id;
+const _keyExtractor = item => item.id;
 
-interface ContentProps {
-  modalVisible: ModalTypes;
-  setModalVisible: React.Dispatch<React.SetStateAction<ModalTypes>>;
-}
-
-export const Content: React.FC<ContentProps> = props => {
+export const Content = props => {
   /**
    * `usePeerTrackNodes` hook takes care of setting up {@link HMSSDK | HMSSDK} instance, joining meeting and adding all required event listeners.
    * It gives us:
@@ -31,7 +25,7 @@ export const Content: React.FC<ContentProps> = props => {
   const {peerTrackNodes, loading, activeSpeakers, leaveMeeting} =
     usePeerTrackNodes();
 
-  const _renderItem = ({item}: {item: PeerTrackNode}) => {
+  const _renderItem = ({item}) => {
     // checking if current PeerTrackNode is active speaker
     const isActiveSpeaker = activeSpeakers.some(activeSpeaker => {
       return (

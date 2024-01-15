@@ -11,7 +11,6 @@ import {
 import {useDispatch, useSelector} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import type {NativeStackNavigationProp} from '@react-navigation/native-stack';
 
 import {styles} from './styles';
 
@@ -19,22 +18,15 @@ import {CustomButton, CustomInput} from '../../components';
 import {saveUserData} from '../../redux/actions';
 import {callService} from '../../utils/functions';
 import {COLORS} from '../../utils/theme';
-import type {AppStackParamList} from '../../navigator';
-import type {RootState} from '../../redux';
-
-type MeetingSetupScreenProp = NativeStackNavigationProp<
-  AppStackParamList,
-  'MeetingSetupScreen'
->;
 
 export const MeetingSetup = () => {
   const {top, bottom, left, right} = useSafeAreaInsets();
   const dispatch = useDispatch();
-  const navigation = useNavigation<MeetingSetupScreenProp>();
-  const userName = useSelector((state: RootState) => state.user.userName);
-  const roomLink = useSelector((state: RootState) => state.user.roomLink);
+  const navigation = useNavigation();
+  const userName = useSelector(state => state.user.userName);
+  const roomLink = useSelector(state => state.user.roomLink);
 
-  const [peerName, setPeerName] = useState<string>(userName);
+  const [peerName, setPeerName] = useState(userName);
   const [loading, setLoading] = useState(false);
 
   const setup = async () => {
@@ -73,7 +65,7 @@ export const MeetingSetup = () => {
       navigation.replace('MeetingScreen', {...data});
     } catch (error) {
       setLoading(false);
-      Alert.alert('Error', (error as string) || 'Something went wrong');
+      Alert.alert('Error', error || 'Something went wrong');
     }
   };
 

@@ -10,7 +10,6 @@ import {
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {useFocusEffect, useNavigation} from '@react-navigation/native';
-import type {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -18,8 +17,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import {styles} from './styles';
 
-import type {AppStackParamList} from '../../navigator';
-import {getMeetingUrl, validateUrl} from '../../utils/functions';
+import {validateUrl} from '../../utils/functions';
 import {COLORS} from '../../utils/theme';
 import {
   CustomButton,
@@ -29,18 +27,12 @@ import {
 } from '../../components';
 import {saveUserData} from '../../redux/actions';
 import {Constants} from '../../utils/types';
-import {RootState} from '../../redux';
-
-type WelcomeScreenProp = NativeStackNavigationProp<
-  AppStackParamList,
-  'WelcomeScreen'
->;
 
 export const Welcome = () => {
   const dispatch = useDispatch();
   const {top, bottom, left, right} = useSafeAreaInsets();
-  const navigation = useNavigation<WelcomeScreenProp>();
-  const roomLink = useSelector((state: RootState) => state.user.roomLink);
+  const navigation = useNavigation();
+  const roomLink = useSelector(state => state.user.roomLink);
 
   const [joinDisabled, setJoinDisabled] = useState(true);
   const [joiningLink, setJoiningLink] = useState(roomLink);

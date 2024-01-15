@@ -6,10 +6,9 @@ import {useSelector} from 'react-redux';
 import {styles} from '../styles';
 
 import {CustomButton} from '../../../components';
-import type {RootState} from '../../../redux';
 
-export const Footer: React.FC = () => {
-  const localPeer = useSelector((state: RootState) => state.user.hmsLocalPeer);
+export const Footer = () => {
+  const localPeer = useSelector(state => state.user.hmsLocalPeer);
 
   /**
    * Checking Mute Status of local audio track
